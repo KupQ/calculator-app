@@ -57,9 +57,22 @@ jobs:
 
       - name: Package unsigned IPA
         run: |
-          # Manually create IPA from the archive
+          # Debug: show archive structure
+          echo "=== Archive contents ==="
+          find $RUNNER_TEMP/Calculator.xcarchive -name "*.app" -type d
+          
+          # Find the .app bundle
+          APP_PATH=$(find $RUNNER_TEMP/Calculator.xcarchive -name "Calculator.app" -type d | head -1)
+          
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: Calculator.app not found in archive!"
+            find $RUNNER_TEMP/Calculator.xcarchive -maxdepth 4 -type d
+            exit 1
+          fi
+          
+          echo "Found app at: $APP_PATH"
           mkdir -p $RUNNER_TEMP/Payload
-          cp -r $RUNNER_TEMP/Calculator.xcarchive/Products/Applications/Calculator.app $RUNNER_TEMP/Payload/
+          cp -r "$APP_PATH" $RUNNER_TEMP/Payload/
           cd $RUNNER_TEMP && zip -r Calculator-unsigned.ipa Payload/
           echo "IPA created: $(ls -lh $RUNNER_TEMP/Calculator-unsigned.ipa)"
 
