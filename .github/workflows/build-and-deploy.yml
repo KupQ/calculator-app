@@ -126,8 +126,9 @@ jobs:
           mkdir -p ~/.private_keys
           echo "$ASC_PRIVATE_KEY" > ~/.private_keys/AuthKey_${ASC_KEY_ID}.p8
 
-          IPA_PATH="$RUNNER_TEMP/export/Calculator.ipa"
+          IPA_PATH=$(find "$RUNNER_TEMP/export" -name "*.ipa" -type f | head -1)
           echo "=== IPA Info ==="
+          echo "Found IPA: $IPA_PATH"
           ls -la "$IPA_PATH"
           
           echo ""
@@ -157,8 +158,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Calculator-signed-ipa
-          path: ${{ runner.temp }}/export/Calculator.ipa
+          name: Calkatory-signed-ipa
+          path: ${{ runner.temp }}/export/*.ipa
           if-no-files-found: ignore
           retention-days: 30
 
