@@ -1,0 +1,27 @@
+name: Calculator
+options:
+  bundleIdPrefix: com.calckatorys
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "15.0"
+  createIntermediateGroups: true
+
+targets:
+  Calculator:
+    type: application
+    platform: iOS
+    sources:
+      - Calculator
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.calckatorys.app
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "5.9"
+        INFOPLIST_FILE: Calculator/Info.plist
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_STYLE: Manual
+        DEVELOPMENT_TEAM: "$(DEVELOPMENT_TEAM)"
+        PROVISIONING_PROFILE_SPECIFIER: "$(PROVISIONING_PROFILE_SPECIFIER)"
+        CODE_SIGN_IDENTITY: "iPhone Distribution"
