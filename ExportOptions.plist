@@ -5,7 +5,7 @@
     <key>method</key>
     <string>app-store</string>
     <key>teamID</key>
-    <string>TEAM_ID_PLACEHOLDER</string>
+    <string>7X6ZB8UVB8</string>
     <key>uploadSymbols</key>
     <true/>
     <key>uploadBitcode</key>
@@ -15,7 +15,7 @@
     <key>provisioningProfiles</key>
     <dict>
         <key>com.calckatorys.app</key>
-        <string>PROVISIONING_PROFILE_PLACEHOLDER</string>
+        <string>Calculator AppStore Distribution</string>
     </dict>
 </dict>
 </plist>
