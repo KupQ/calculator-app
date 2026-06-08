@@ -121,18 +121,37 @@ jobs:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
           ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
         run: |
           mkdir -p ~/.private_keys
           echo "$ASC_PRIVATE_KEY" > ~/.private_keys/AuthKey_${ASC_KEY_ID}.p8
 
-          xcrun notarytool submit "$RUNNER_TEMP/export/Calculator.ipa" \
-            --apple-id "" --team-id "" 2>/dev/null || true
+          IPA_PATH="$RUNNER_TEMP/export/Calculator.ipa"
+          echo "=== IPA Info ==="
+          ls -la "$IPA_PATH"
+          
+          echo ""
+          echo "=== Step 1: Validate IPA ==="
+          xcrun altool --validate-app \
+            --type ios \
+            --file "$IPA_PATH" \
+            --apiKey "$ASC_KEY_ID" \
+            --apiIssuer "$ASC_ISSUER_ID" \
+            --output-format json \
+            --verbose 2>&1 || echo "Validation had issues, trying upload anyway..."
 
+          echo ""
+          echo "=== Step 2: Upload IPA ==="
           xcrun altool --upload-app \
             --type ios \
-            --file "$RUNNER_TEMP/export/Calculator.ipa" \
+            --file "$IPA_PATH" \
             --apiKey "$ASC_KEY_ID" \
-            --apiIssuer "$ASC_ISSUER_ID"
+            --apiIssuer "$ASC_ISSUER_ID" \
+            --output-format json \
+            --verbose 2>&1
+
+          echo ""
+          echo "=== Upload complete ==="
 
       - name: Upload IPA as artifact (backup)
         if: always()
